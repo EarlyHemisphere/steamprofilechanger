@@ -25,7 +25,7 @@ cookies = {'steamLogin': '',
 data = {"sessionid": "",
         "doSub": "1"}
 
-DIR = "C:/Users/Lucas/Desktop/steam/images/test.jpg"
+DIR = "C:/.../folderwithscript/images/test.jpg"
 
 delay = 300
 
