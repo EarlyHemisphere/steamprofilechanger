@@ -1,12 +1,10 @@
 # steamprofilechanger
-A python script that uses requests to change a user's profile picture to a random picture from the internet at given time intervals.
+A python script that uses requests and ValvePython to change a user's profile picture to a random picture from the internet at given time intervals.
 
 ### Setup
 As long as the script has an "images" folder in the same directory that consists of a "test.jpg" that can be any image you want, it'll work. It overwrites the test.jpg each time.
 
-A `sId`, `sessionid`, `steamLogin`, and `steamLoginSecure` need to be filled in so Steam can authenticate you.
- - `sId` is just your SteamID64.
- - `sessionid`, `steamLogin`, and `steamLoginSecure` can all be obtained by going to Chrome Settings -> Content Settings -> Cookies -> See All Cookies and Site Data -> steamcommunity.
+With python and the right packages installed, anyone can run the script successfully if their steam username and password is known. 2FA is also taken care of by ValvePython.
 
 ### Process
 At each specified interval in time, the script:
@@ -18,4 +16,11 @@ At each specified interval in time, the script:
 5) Uploads it to Steam using the FileUploader
 
 ### Note
-There are better ways to accomplish this/the code can be improved. I just starting using it once I got it working.
+There are better ways to accomplish this/the code can be improved.
+
+### Small bug
+Currently, there are two known issues brought by ValvePython.
+ 1. Script will crash without error at a get_web_session_cookies() or urlopen() request. Suspect max recursion depth reached.
+ 2. Running the script multiple times could cause it to be unable to upload images. Tried to combat this by adding client.logout() and client.disconnect() on KeyboardInterrupt.
+
+Issues are to be looked into in the future.
