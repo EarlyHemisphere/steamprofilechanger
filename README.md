@@ -4,7 +4,14 @@ A python script that uses requests and ValvePython to change a user's profile pi
 ### Setup
 As long as the script has an "images" folder in the same directory that consists of a "test.jpg" that can be any image you want, it'll work. It overwrites the test.jpg each time.
 
-With python and the right packages installed, anyone can run the script successfully if their steam username and password is known. 2FA is also taken care of by ValvePython.
+After running the following imports:
+
+    pip install gevent
+    pip install urllib
+    pip install beautifulsoup4
+    pip install -u steam
+
+the script can be run successfully if their steam username and password is known. 2FA is also taken care of by ValvePython.
 
 ### Process
 At each specified interval in time, the script:
