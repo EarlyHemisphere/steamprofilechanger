@@ -11,7 +11,7 @@ After running the following imports:
     pip install beautifulsoup4
     pip install -u steam
 
-the script can be run successfully if their steam username and password is known. 2FA is also taken care of by ValvePython.
+the script can be run successfully if your steam username and password is known. 2FA is also taken care of by ValvePython.
 
 ### Process
 At each specified interval in time, the script:
