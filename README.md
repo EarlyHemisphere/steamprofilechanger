@@ -6,10 +6,8 @@ As long as the script has an "images" folder in the same directory that consists
 
 After running the following imports:
 
-    pip install gevent
     pip install urllib
     pip install beautifulsoup4
-    pip install -u steam
 
 the script can be run successfully if your steam username and password is known. 2FA is also taken care of by ValvePython.
 
@@ -21,13 +19,3 @@ At each specified interval in time, the script:
 3) Uses the word as a search query in google images
 4) Downloads the nth search result, where n is the random number between 1 and 5
 5) Uploads it to Steam using the FileUploader
-
-### Note
-There are better ways to accomplish this/the code can be improved.
-
-### Small bug
-Currently, there are two known issues brought by ValvePython.
- 1. Script will crash without error at a get_web_session_cookies() or urlopen() request. Suspect max recursion depth reached.
- 2. Running the script multiple times could cause it to be unable to upload images. Tried to combat this by adding client.logout() and client.disconnect() on KeyboardInterrupt.
-
-Issues are to be looked into in the future.
