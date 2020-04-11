@@ -6,11 +6,11 @@ import time
 import requests
 import getpass
 import base64
+import traceback
 import cryptography.hazmat.backends
 from urllib.request import urlopen
 from urllib.request import Request
 from urllib.parse import urlencode
-from bs4 import BeautifulSoup
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_v1_5
 from binascii import hexlify
@@ -79,6 +79,17 @@ def getWords():
     txt = urlopen(wordsUrl).read()
     return txt.splitlines()
 
+def extractFirstNImages(n, html):
+    imageUrls = []
+    jsFunctionStart = html.find('AF_initDataCallback({key: \'ds:1\',')
+    objStart = html.find('return', jsFunctionStart) + 7
+    objEnd = html.find('</script>', jsFunctionStart) - 5
+    jsonObj = json.loads(html[objStart:objEnd])
+
+    for i in range(n):
+        imageUrls.append(jsonObj[31][0][12][2][i][1][3][0])
+    return imageUrls
+
 def googleAndUpload(STEAM_ID, WORDS, cookies, sleepTime):
     global DIR
 
@@ -86,14 +97,16 @@ def googleAndUpload(STEAM_ID, WORDS, cookies, sleepTime):
 
     searchQuery = str(random.choice(WORDS))
     searchQuery = searchQuery[2:len(searchQuery)-1]
-
-    imageResultNum = random.randint(0,5)
+    imageResultNum = random.randint(0,4)
     header={'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36'}
     googleUrl = 'https://www.google.co.in/search?q=' + searchQuery + '&source=lnms&tbm=isch'
-    soup = BeautifulSoup(urlopen(Request(googleUrl,headers=header)), 'html.parser')
-    images = soup.find_all('div',{'class':'rg_meta'})
-    link = json.loads(images[imageResultNum].text)['ou']
-    
+
+    response = urlopen(Request(googleUrl,headers=header))
+    html_response = response.read()
+    encoding = response.headers.get_content_charset('utf-8')
+    decoded_html = html_response.decode(encoding)
+    link = extractFirstNImages(5, decoded_html)[imageResultNum]
+
     raw_img = requests.get(link,stream=True)
     with open(IMG_DIR, 'wb') as out_file:
         shutil.copyfileobj(raw_img.raw, out_file)
@@ -106,7 +119,7 @@ def googleAndUpload(STEAM_ID, WORDS, cookies, sleepTime):
             img = img.resize((int(originalSize[0] * 0.75), int(originalSize[1] * 0.75)), Image.ANTIALIAS)
             img = img.convert("RGB")
             img.save(IMG_DIR, optimize=True, quality=95)
-    
+
     image = open(IMG_DIR, 'rb')
     params = {'type': 'player_avatar_image', 'sId': STEAM_ID}
     data = {'sessionid': cookies.get('sessionid'), 'doSub': '1'}
@@ -147,6 +160,7 @@ if __name__ == '__main__':
                         raise ValueError(e)
                     else:
                         print(e)
+                        traceback.print_exc()
                         print("Redoing image search...")
         except ValueError as e:
             if 'BadOrMissingSteamID' in str(e):
