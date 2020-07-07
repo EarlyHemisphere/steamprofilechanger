@@ -7,6 +7,8 @@ As long as the script has an "images" folder in the same directory that consists
 After running the following imports:
 
     pip install urllib
+	pip install Crypto
+	pip install Pillow
 
 the script can be run successfully if your steam username and password is known. 2FA is also taken care of by ValvePython.
 
