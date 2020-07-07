@@ -16,7 +16,6 @@ from Crypto.Cipher import PKCS1_v1_5
 from binascii import hexlify
 from cryptography.hazmat.primitives.hashes import Hash, SHA1
 from PIL import Image
-import Config
 
 user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
 IMG_DIR = os.getcwd() + '/images/img.jpg'
